@@ -8,8 +8,10 @@ RUN npm install
 
 COPY . .
 
+RUN npx prisma generate
+
 RUN npm run build
 
-EXPOSE 8080
+EXPOSE 8000
 
 CMD [ "node", "dist/index.js" ]
