@@ -1,24 +1,75 @@
 # Logs
-logs
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
 
-*node_modules
-*dist
-dist-ssr
-*.local
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-*.idea
+# Dependency directories
+node_modules/
+client/node_modules/
+api/node_modules/
+ios/node_modules/
+
+# Environment variables
+.env
+client/.env
+api/.env
+ios/.env
+
+# System files
 .DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+Thumbs.db
+
+# Compiled source
+dist/
+build/
+
+# Output of `npm pack`
+*.tgz
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# TypeScript
+*.tsbuildinfo
+
+# Coverage
+coverage/
+*.lcov
+.nyc_output/
+
+# Docker
+Dockerfile
+client/Dockerfile
+api/Dockerfile
+ios/Dockerfile
+
+# Prisma
+api/prisma/migrations/
+
+# Static files
+client/public/static/
+
+# iOS specific
+ios/build/
+ios/*.pbxproj
+ios/xcuserdata/
+ios/DerivedData/
+ios/*.xcworkspace
+ios/*.xcuserstate
+
+# Miscellaneous
+*.sublime-project
+*.sublime-workspace
+.idea/
+.vscode/
