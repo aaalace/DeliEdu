@@ -7,8 +7,6 @@ const userController = new UserController();
 
 router.get('/', userController.getAll);
 
-router.get('/:userId', userController.getUser);
-
 router.post('/register',
   body('name').isLength({min: 1, max: 20}),
   body('email').isEmail(),
@@ -25,5 +23,7 @@ router.post('/login',
 router.get('/logout', userController.logout);
 
 router.get('/refresh', userController.refresh);
+
+router.get('/:userId', userController.getUser);
 
 export default router;

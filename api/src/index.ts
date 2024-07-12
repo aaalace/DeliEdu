@@ -3,12 +3,14 @@ import dotenv from "dotenv"
 import cors from "cors"
 import router from "./routes";
 import errorHandler from "./middleware/errorHandler";
+import cookieParser from "cookie-parser";
 
 dotenv.config()
 const app: Application = express()
 
 app.use(cors())
 app.use(express.json())
+app.use(cookieParser());
 app.use('', router)
 app.use(errorHandler)
 
