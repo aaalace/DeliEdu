@@ -48,12 +48,6 @@ coverage/
 *.lcov
 .nyc_output/
 
-# Docker
-Dockerfile
-client/Dockerfile
-api/Dockerfile
-ios/Dockerfile
-
 # Prisma
 api/prisma/migrations/
 
