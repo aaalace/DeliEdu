@@ -1,23 +1,17 @@
-import { app } from "./lib/axios.ts";
-import { useState } from "react";
+import { BrowserRouter } from "react-router-dom";
+import AppRouter from "./routes";
+import Navbar from "./components/markup/navbar/Navbar.tsx";
 
 function App() {
-  const [user, setUser] = useState('')
-
-  const test = async (id: number) => {
-    const user = await app.get(`/users/${id}`);
-    setUser(user.data.name);
-  }
 
   return (
-    <>
-      <button onClick={() => test(1)}>1</button>
-      <button onClick={() => test(2)}>2</button>
-      <button onClick={() => test(3)}>3</button>
-      <button onClick={() => test(4)}>4</button>
-      {user}
-    </>
+    <div className="App">
+      <BrowserRouter>
+        <Navbar/>
+        <AppRouter/>
+      </BrowserRouter>
+    </div>
   )
 }
 
-export default App
+export default App;

@@ -25,3 +25,7 @@ services:
 
 #  ios:
 #    build: /ios
+
+networks:
+  mynetwork:
+    driver: bridge
