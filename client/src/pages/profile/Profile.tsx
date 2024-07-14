@@ -1,12 +1,16 @@
-import { MouseEvent } from "react";
+import { MouseEvent, useEffect, useRef, useState } from "react";
 import { logoutApi } from "../../api/authApi.ts";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { authLogout } from "../../store/slices/authSlice.ts";
 import { useNavigate } from "react-router-dom";
-import InviteList from "../../components/general/inviteList/InviteList.tsx";
+import InviteList from "../../components/invite/inviteList/InviteList.tsx";
+import User from "../../types/entities/user";
+import { getUserById } from "../../api/userApi.ts";
 
 const Profile = () => {
+
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -24,9 +28,19 @@ const Profile = () => {
     }
   }
 
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      const data: User | null = await getUserById(Number(id));
+      if (data) {
+        setCurrentUser(data);
+      }
+    };
+    fetchCurrentUser().then();
+  }, [id])
+
   return (
     <div>
-      <h1>{id == mainUser.id ? 'мой аккаунт' : `профиль пользователя ${Number(id)}`}</h1>
+      <h1>{id == mainUser.id ? 'мой аккаунт' : `${currentUser ? currentUser.name : ''}`}</h1>
       {id == mainUser.id ?
         <button onClick={leave}>выйти</button>
         :

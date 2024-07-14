@@ -1,25 +1,25 @@
-import InviteList from "../../components/general/inviteList/InviteList.tsx";
+import InviteList from "../../components/invite/inviteList/InviteList.tsx";
 import { useState } from "react";
+import AddInviteModal from "../../components/modals/addInviteModal/AddInviteModal.tsx";
 
 const Dashboard = () => {
 
-  const [city, setCity] = useState<string>('');
-  const [date, setDate] = useState<string>('');
+  const [showModal, setShowModal] = useState(false);
+
+  const openModal = () => {
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
 
   return (
     <div>
       <h1>дашборд</h1>
-      <input
-        type="text"
-        onChange={(e) => setCity(e.target.value)}
-        value={city}
-      />
-      <input
-        type="date"
-        onChange={(e) => setDate(e.target.value)}
-        value={date}
-      />
-      <InviteList city={city} date={date}/>
+      <button onClick={openModal}>Добавить инвайт</button>
+      <InviteList/>
+      <AddInviteModal show={showModal} onClose={closeModal}/>
     </div>
   )
 }

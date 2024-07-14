@@ -4,7 +4,7 @@ interface Invite {
   city: string,
   dt: string,
   description: string,
-  contacts: string
+  contacts: string,
 }
 
 export default Invite;

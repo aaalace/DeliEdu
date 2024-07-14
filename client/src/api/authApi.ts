@@ -3,14 +3,14 @@ import { LoginRequest } from "../types/requests/loginRequest.ts";
 import { RegisterRequest } from "../types/requests/registerRequest.ts";
 import { AuthResponse } from "../types/responses/authResponse.ts";
 
-const userApiOptions = {
+const authApiOptions = {
   withCredentials: true,
   headers: { 'Content-Type': 'application/json' }
 }
 
 export const registerApi = async (data: RegisterRequest): Promise<AuthResponse | null> => {
   try {
-    const response = await app.post('users/register', data, userApiOptions);
+    const response = await app.post('users/register', data, authApiOptions);
     if (response.status == 200) {
       const data: AuthResponse = response.data;
       localStorage.setItem('accessToken', data.accessToken);
@@ -25,7 +25,7 @@ export const registerApi = async (data: RegisterRequest): Promise<AuthResponse |
 
 export const loginApi = async (data: LoginRequest): Promise<AuthResponse | null> => {
   try {
-    const response = await app.post('users/login', data, userApiOptions);
+    const response = await app.post('users/login', data, authApiOptions);
     if (response.status == 200) {
       const data: AuthResponse = response.data;
       localStorage.setItem('accessToken', data.accessToken);
@@ -40,7 +40,7 @@ export const loginApi = async (data: LoginRequest): Promise<AuthResponse | null>
 
 export const refreshTokenApi = async (): Promise<AuthResponse | null> => {
   try {
-    const response = await app.get('users/refresh', userApiOptions);
+    const response = await app.get('users/refresh', authApiOptions);
     if (response.status == 200) {
       const data: AuthResponse = response.data;
       localStorage.setItem('accessToken', data.accessToken);
@@ -55,7 +55,7 @@ export const refreshTokenApi = async (): Promise<AuthResponse | null> => {
 
 export const logoutApi = async (): Promise<boolean> => {
   try {
-    const response = await app.get('users/logout', userApiOptions);
+    const response = await app.get('users/logout', authApiOptions);
     if (response.status == 200) {
       localStorage.removeItem('accessToken');
       return true;

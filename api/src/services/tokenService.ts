@@ -30,7 +30,7 @@ class TokenService {
     }
   }
 
-  async updateRefreshToken(userId: number, newRefreshToken: string) {
+  async updateRefreshToken(userId: number, newRefreshToken: string): Promise<void> {
     const relation: any = await prisma.refreshToken.findUnique({where: {userId: userId}})
     if (relation) {
       await prisma.refreshToken.update({

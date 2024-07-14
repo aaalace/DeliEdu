@@ -1,6 +1,7 @@
 interface Invite {
   id: number,
   userId: number,
+  authorName: string,
   city: string,
   dt: string,
   description: string,

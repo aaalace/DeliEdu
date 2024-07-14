@@ -21,7 +21,7 @@ const InviteElement = ({invite, onDelete}: InviteElementProps) => {
   return (
     <div style={{display: "flex", flexDirection: "row", justifyContent: "space-evenly"}}>
       <Link to={`/profile/${invite.userId}`}>
-        <p>user: {invite.userId}</p>
+        <p>user: {invite.authorName}</p>
       </Link>
       <p>city: {invite.city}</p>
       <p>dt: {invite.dt}</p>

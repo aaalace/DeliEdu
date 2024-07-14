@@ -2,37 +2,32 @@ import prisma from "../db/prisma";
 import Invite from "../types/entitites/invite";
 import AddInviteRequest from "../types/requests/addInviteRequest";
 import { InviteQuery } from "../types/helpers/inviteQuery";
+import InviteResponse from "../types/responses/inviteResponse";
+import { InvitesGetOptions } from "../types/helpers/invitesGetOptions";
+import { createInvitesGetOptions } from "../utils/createInvitesGetOptions";
 
 class InviteService {
-  async getInvites(query: InviteQuery): Promise<any> {
-    const { userId, city, date } = query;
+  async getInvites(query: InviteQuery): Promise<InviteResponse[]> {
 
-    const whereExpression: any = {};
-    if (userId) {
-      whereExpression.userId = userId;
-    }
-    if (city) {
-      whereExpression.city = {
-        equals: city,
-        mode: 'insensitive', // Нечувствительность к регистру
-      };
-    }
-    if (date) {
-      const startOfDay = new Date(date);
-      startOfDay.setUTCHours(0, 0, 0, 0);
+    const options: InvitesGetOptions = createInvitesGetOptions(query);
 
-      const endOfDay = new Date(date);
-      endOfDay.setUTCHours(23, 59, 59, 999);
-
-      whereExpression.dt = {
-        gte: startOfDay,
-        lt: endOfDay,
-      };
-    }
-
-    return prisma.invite.findMany({
-      where: whereExpression,
+    const invites: any[] = await prisma.invite.findMany({
+      where: options.whereExpression,
+      orderBy: options.orderBy,
+      include: {
+        user: true,
+      },
     });
+
+    return invites.map((invite) => ({
+      id: invite.id,
+      userId: invite.userId,
+      city: invite.city,
+      dt: invite.dt,
+      description: invite.description,
+      contacts: invite.contacts,
+      authorName: invite.user.name,
+    }));
   }
 
   async addInvite(addInviteRequest: AddInviteRequest, userId: number): Promise<Invite> {
@@ -45,7 +40,7 @@ class InviteService {
         contacts: addInviteRequest.contacts
       }
     });
-    if (!newInvite) throw Error('error in creating inviteElement instance');
+    if (!newInvite) throw Error('error in creating invite instance');
 
     return newInvite;
   }

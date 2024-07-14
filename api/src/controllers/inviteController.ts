@@ -5,6 +5,8 @@ import { validationResult } from "express-validator";
 import { InviteQuery } from "../types/helpers/inviteQuery";
 import { AddInviteBody } from "../types/requests/addInviteBody";
 import AddInviteRequest from "../types/requests/addInviteRequest";
+import InviteResponse from "../types/responses/inviteResponse";
+import { DateOrderEnum } from "../enums/dateOrderEnum";
 
 class InviteController {
   async getInvites(req: Request<{}, {}, {}, InviteQuery>, res: Response, next: NextFunction) {
@@ -15,8 +17,9 @@ class InviteController {
         userId: req.query.userId ? Number(req.query.userId) : undefined,
         city: req.query.city as string | undefined,
         date: req.query.date ? new Date(req.query.date as unknown as string) : undefined,
+        order: req.query.order as DateOrderEnum | undefined
       };
-      const invites: Invite[] = await inviteService.getInvites(query);
+      const invites: InviteResponse[] = await inviteService.getInvites(query);
 
       return res.status(200).json(invites);
     } catch (error) {
