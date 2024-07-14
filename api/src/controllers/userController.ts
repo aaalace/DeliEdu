@@ -9,8 +9,7 @@ import LoginUserRequest from "../types/requests/loginUserRequest";
 import { toUsersResponse } from "../lib/toUsersResponse";
 import { REFRESH_TOKEN, REFRESH_TOKEN_LIFETIME } from "../constants/auth";
 import TokenService from "../services/tokenService";
-import { Tokens } from "../types/entitites/tokens";
-import { JwtPayload } from "../types/entitites/jwtPayload";
+import { Tokens } from "../types/helpers/tokens";
 
 class UserController {
   async getAll(req: Request, res: Response, next: NextFunction) {
@@ -18,7 +17,7 @@ class UserController {
       const userService = new UserService();
       const users: User[] = await userService.getAll();
 
-      return res.json(toUsersResponse(users));
+      return res.status(200).json(toUsersResponse(users));
     } catch (error) {
       next(error);
     }
@@ -32,7 +31,7 @@ class UserController {
       const user: User = await userService.getUser(Number(userId));
 
 
-      return res.json(toUserResponse(user));
+      return res.status(200).json(toUserResponse(user));
     } catch (error) {
       next(error);
     }
@@ -51,19 +50,14 @@ class UserController {
 
       // tokens
       const tokenService = new TokenService();
-      const userPayload: JwtPayload = {
-        id: userResponse.id,
-        name: userResponse.name,
-        email: userResponse.email,
-      };
-      const tokens: Tokens = tokenService.createTokens(userPayload);
+      const tokens: Tokens = tokenService.createTokens(userResponse);
       await tokenService.updateRefreshToken(userResponse.id, tokens.refreshToken);
       res.cookie(REFRESH_TOKEN, tokens.refreshToken, {
         maxAge: REFRESH_TOKEN_LIFETIME, // 2 weeks
         httpOnly: true
       });
 
-      return res.json({
+      return res.status(200).json({
         user: userResponse,
         accessToken: tokens.accessToken
       })
@@ -85,19 +79,14 @@ class UserController {
 
       // tokens
       const tokenService = new TokenService();
-      const userPayload: JwtPayload = {
-        id: userResponse.id,
-        name: userResponse.name,
-        email: userResponse.email,
-      };
-      const tokens: Tokens = tokenService.createTokens(userPayload);
+      const tokens: Tokens = tokenService.createTokens(userResponse);
       await tokenService.updateRefreshToken(userResponse.id, tokens.refreshToken);
       res.cookie(REFRESH_TOKEN, tokens.refreshToken, {
         maxAge: REFRESH_TOKEN_LIFETIME, // 2 weeks
         httpOnly: true
       });
 
-      return res.json({
+      return res.status(200).json({
         user: userResponse,
         accessToken: tokens.accessToken
       })
@@ -127,7 +116,7 @@ class UserController {
         httpOnly: true,
       })
 
-      return res.json({
+      return res.status(200).json({
         user,
         accessToken: tokens.accessToken
       })

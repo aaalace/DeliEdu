@@ -1,26 +1,47 @@
-import { useState } from "react";
-import { login, logout, refreshToken } from "../../api/userApi.ts";
+import { MouseEvent, useEffect, useState } from "react";
+import { loginApi } from "../../api/authApi.ts";
+import { AppDispatch } from "../../store/store.ts";
+import { useDispatch, useSelector } from "react-redux";
+import { LoginRequest } from "../../types/requests/loginRequest.ts";
+import { authSuccess } from "../../store/slices/authSlice.ts";
+import { AuthResponse } from "../../types/responses/authResponse.ts";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
 
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const navigate = useNavigate();
 
-  const entry = async () => {
-    await login({email, password})
-  }
+  const authenticated = useSelector(state => state.auth.accessToken);
+  const user = useSelector(state => state.auth.user);
+  const dispatch: AppDispatch = useDispatch();
 
-  const refresh = async () => {
-    await refreshToken()
-  }
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const leave = async () => {
-    await logout()
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    if (authenticated) {
+      navigate(`/profile/${user.id}`);
+    }
+  }, [authenticated]);
+
+  const entry = async (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const loginRequest: LoginRequest = {email, password};
+    const data: AuthResponse | null = await loginApi(loginRequest);
+    if (data) {
+      await dispatch(authSuccess(data));
+      setError(false);
+      navigate('/dashboard')
+    } else {
+      setError(true);
+    }
   }
 
   return (
     <div>
-      логин
+      <h1>логин</h1>
       <div>
         <input
           type="email"
@@ -33,8 +54,7 @@ const Login = () => {
           value={password}
         />
         <button onClick={entry}>ok</button>
-        <button onClick={refresh}>refresh</button>
-        <button onClick={leave}>logout</button>
+        {error ? <p>error</p> : null}
       </div>
     </div>
   )

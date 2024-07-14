@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^5.16.2",
+    "@reduxjs/toolkit": "^2.2.6",
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.6",
     "bcrypt": "^5.1.1",
@@ -20,7 +21,9 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "express-validator": "^7.1.0",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "react-redux": "^9.1.2",
+    "redux-thunk": "^3.1.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",

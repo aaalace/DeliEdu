@@ -1,10 +1,12 @@
 import { Route, Routes } from "react-router-dom";
 import publicRoutes from "./routes/publicRoutes.tsx";
 import privateRoutes from "./routes/privateRoutes.tsx";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store.ts";
 
 const AppRouter = () => {
 
-  const authenticated = false;
+  const authenticated = useSelector((state: RootState) => state.auth.accessToken);
 
   return (
     <Routes>

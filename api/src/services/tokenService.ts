@@ -1,8 +1,7 @@
 import prisma from "../db/prisma";
-import { JwtPayload as DefaultJwtPayload, sign, verify } from 'jsonwebtoken';
+import { JwtPayload, sign, verify } from 'jsonwebtoken';
 import { ACCESS_TOKEN_EXPIRES, REFRESH_TOKEN_EXPIRES } from "../constants/auth";
-import { Tokens } from "../types/entitites/tokens";
-import { JwtPayload } from "../types/entitites/jwtPayload";
+import { Tokens } from "../types/helpers/tokens";
 import UserResponse from "../types/responses/userResponse"
 
 class TokenService {
@@ -13,19 +12,19 @@ class TokenService {
     return { accessToken, refreshToken }
   }
 
-  verifyAccessToken(accessToken: string): JwtPayload | null  {
+  verifyAccessToken(accessToken: string)  {
     try{
       const ACCESS_SECRET_KEY = process.env.ACCESS_SECRET_KEY || 'access_not_so_secret_key';
-      return verify(accessToken, ACCESS_SECRET_KEY) as DefaultJwtPayload & JwtPayload;
+      return verify(accessToken, ACCESS_SECRET_KEY) as JwtPayload & UserResponse;
     } catch (e) {
       return null
     }
   }
 
-  verifyRefreshToken(refresh_token: string): JwtPayload | null {
+  verifyRefreshToken(refresh_token: string) {
     try{
       const REFRESH_SECRET_KEY = process.env.REFRESH_SECRET_KEY || 'refresh_not_so_secret_key';
-      return verify(refresh_token, REFRESH_SECRET_KEY) as DefaultJwtPayload & JwtPayload;
+      return verify(refresh_token, REFRESH_SECRET_KEY) as JwtPayload & UserResponse;
     } catch (e) {
       return null
     }

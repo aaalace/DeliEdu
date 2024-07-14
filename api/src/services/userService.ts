@@ -4,8 +4,8 @@ import bcrypt from "bcrypt";
 import User from "../types/entitites/user";
 import LoginUserRequest from "../types/requests/loginUserRequest";
 import TokenService from "./tokenService";
-import { Tokens } from "../types/entitites/tokens";
-import { JwtPayload } from "../types/entitites/jwtPayload";
+import { Tokens } from "../types/helpers/tokens";
+import UserResponse from "../types/responses/userResponse";
 
 class UserService {
   async getAll(): Promise<User[]> {
@@ -48,19 +48,21 @@ class UserService {
 
   async refresh(oldRefreshToken: string) {
     const tokenService = new TokenService();
-    const localUserData: JwtPayload | null = tokenService.verifyRefreshToken(oldRefreshToken);
+    const localUserData = tokenService.verifyRefreshToken(oldRefreshToken);
     if (!localUserData) throw Error('unauthorized');
 
+    const { iat, exp, ...userResponse } = localUserData;
+
     const tokens: Tokens = tokenService.createTokens({
-      id: localUserData.id,
-      email: localUserData.email,
-      name: localUserData.name,
+      id: userResponse.id,
+      email: userResponse.email,
+      name: userResponse.name,
     });
-    await tokenService.updateRefreshToken(localUserData.id, tokens.refreshToken);
+    await tokenService.updateRefreshToken(userResponse.id, tokens.refreshToken);
 
     return {
       tokens,
-      user: localUserData
+      user: userResponse
     }
   }
 }
