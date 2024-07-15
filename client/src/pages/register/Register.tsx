@@ -6,6 +6,7 @@ import { RegisterRequest } from "../../types/requests/registerRequest.ts";
 import { AppDispatch } from "../../store/store.ts";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import GoogleAuth from "../../components/general/googleAuth/GoogleAuth.tsx";
 
 const Register = () => {
 
@@ -18,6 +19,7 @@ const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [defaultCity, setDefaultCity] = useState("");
 
   const [error, setError] = useState(false);
 
@@ -29,7 +31,7 @@ const Register = () => {
 
   const entry = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const registerRequest: RegisterRequest = {name, email, password};
+    const registerRequest: RegisterRequest = {name, email, password, defaultCity};
     const data: AuthResponse | null = await registerApi(registerRequest);
     if (data) {
       await dispatch(authSuccess(data));
@@ -43,17 +45,27 @@ const Register = () => {
   return (
     <div>
       <h1>регистрация</h1>
+      <GoogleAuth/>
       <div>
+        name
         <input
-          type="name"
+          type="text"
           onChange={(e) => setName(e.target.value)}
           value={name}
         />
+        city
+        <input
+          type="text"
+          onChange={(e) => setDefaultCity(e.target.value)}
+          value={defaultCity}
+        />
+        email
         <input
           type="email"
           onChange={(e) => setEmail(e.target.value)}
           value={email}
         />
+        pass
         <input
           type="password"
           onChange={(e) => setPassword(e.target.value)}

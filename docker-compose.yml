@@ -23,9 +23,6 @@ services:
     depends_on:
       - api
 
-#  ios:
-#    build: /ios
-
 networks:
   mynetwork:
     driver: bridge

@@ -6,6 +6,12 @@ const Dashboard = () => {
 
   const [showModal, setShowModal] = useState(false);
 
+  const [dataChanged, setDataChanged] = useState(false);
+
+  const handleDataChanged = (state: boolean) => {
+    setDataChanged(state);
+  };
+
   const openModal = () => {
     setShowModal(true);
   };
@@ -18,8 +24,8 @@ const Dashboard = () => {
     <div>
       <h1>дашборд</h1>
       <button onClick={openModal}>Добавить инвайт</button>
-      <InviteList/>
-      <AddInviteModal show={showModal} onClose={closeModal}/>
+      <InviteList dataChanged={dataChanged} setDataChanged={setDataChanged}/>
+      <AddInviteModal show={showModal} onClose={closeModal} setDataChanged={setDataChanged}/>
     </div>
   )
 }

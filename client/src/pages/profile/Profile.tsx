@@ -1,4 +1,4 @@
-import { MouseEvent, useEffect, useRef, useState } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 import { logoutApi } from "../../api/authApi.ts";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import InviteList from "../../components/invite/inviteList/InviteList.tsx";
 import User from "../../types/entities/user";
 import { getUserById } from "../../api/userApi.ts";
+import CityBlock from "../../components/profile/CityBlock.tsx";
 
 const Profile = () => {
 
@@ -36,13 +37,20 @@ const Profile = () => {
       }
     };
     fetchCurrentUser().then();
-  }, [id])
+  }, [id, mainUser.defaultCity])
+
+  if (!currentUser) {
+    return null;
+  }
 
   return (
     <div>
       <h1>{id == mainUser.id ? 'мой аккаунт' : `${currentUser ? currentUser.name : ''}`}</h1>
       {id == mainUser.id ?
+        <>
+        <CityBlock currentUser={currentUser}/>
         <button onClick={leave}>выйти</button>
+        </>
         :
         null
       }

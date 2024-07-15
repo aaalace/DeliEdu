@@ -5,7 +5,6 @@ import User from "../types/entitites/user";
 import LoginUserRequest from "../types/requests/loginUserRequest";
 import TokenService from "./tokenService";
 import { Tokens } from "../types/helpers/tokens";
-import UserResponse from "../types/responses/userResponse";
 
 class UserService {
   async getAll(): Promise<User[]> {
@@ -19,6 +18,10 @@ class UserService {
     return user;
   }
 
+  async getUserByEmail(email: string): Promise<User | null> {
+    return prisma.user.findUnique({ where: { email: email } });
+  }
+
   async addUser(addUserRequest: AddUserRequest): Promise<User> {
     const user: any = await prisma.user.findFirst({ where: { email: addUserRequest.email } });
     if (user) throw Error('user is already exists');
@@ -28,7 +31,8 @@ class UserService {
       data: {
         name: addUserRequest.name,
         email: addUserRequest.email,
-        password: hash.toString()
+        password: hash.toString(),
+        defaultCity: addUserRequest.defaultCity
       }
     });
     if (!newUser) throw Error('error in creating user instance');
@@ -57,6 +61,7 @@ class UserService {
       id: userResponse.id,
       email: userResponse.email,
       name: userResponse.name,
+      defaultCity: userResponse.defaultCity
     });
     await tokenService.updateRefreshToken(userResponse.id, tokens.refreshToken);
 
@@ -64,6 +69,16 @@ class UserService {
       tokens,
       user: userResponse
     }
+  }
+
+  async changeCity(newDefaultCity: string, userId: number): Promise<User> {
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: { defaultCity: newDefaultCity },
+    });
+    if (!updatedUser) throw Error('error while updating city');
+
+    return updatedUser;
   }
 }
 

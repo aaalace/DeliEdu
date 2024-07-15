@@ -6,6 +6,7 @@ import { LoginRequest } from "../../types/requests/loginRequest.ts";
 import { authSuccess } from "../../store/slices/authSlice.ts";
 import { AuthResponse } from "../../types/responses/authResponse.ts";
 import { useNavigate } from "react-router-dom";
+import GoogleAuth from "../../components/general/googleAuth/GoogleAuth.tsx";
 
 const Login = () => {
 
@@ -42,6 +43,7 @@ const Login = () => {
   return (
     <div>
       <h1>логин</h1>
+      <GoogleAuth/>
       <div>
         <input
           type="email"

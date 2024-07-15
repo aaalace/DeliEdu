@@ -8,9 +8,11 @@ import { DateOrderEnum } from "../../../enums/dateOrderEnum.ts";
 
 interface InviteListProps {
   userId?: number,
+  dataChanged?: boolean,
+  setDataChanged?: (boolean) => void
 }
 
-const InviteList = ({userId}: InviteListProps) => {
+const InviteList = ({userId, dataChanged = false, setDataChanged = () => {}}: InviteListProps) => {
 
   const [city, setCity] = useState<string>('');
   const [date, setDate] = useState<string>('');
@@ -33,6 +35,13 @@ const InviteList = ({userId}: InviteListProps) => {
   useEffect(() => {
     loadInvites().then();
   }, [userId, city, date, order]);
+
+  useEffect(() => {
+    if (dataChanged) {
+      loadInvites().then();
+    }
+    setDataChanged(false)
+  }, [dataChanged]);
 
   return (
     <div style={{display: "flex", flexDirection: "column", justifyContent: "space-evenly", alignItems: "center"}}>

@@ -2,7 +2,8 @@ interface User {
   id: number,
   name: string,
   email: string,
-  password: string
+  password: string,
+  defaultCity: string
 }
 
 export default User;

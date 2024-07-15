@@ -1,7 +1,8 @@
 interface AddUserRequest  {
   name: string,
   email: string,
-  password: string
+  password: string,
+  defaultCity: string
 }
 
 export default AddUserRequest;

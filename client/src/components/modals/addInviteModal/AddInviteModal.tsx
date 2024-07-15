@@ -4,14 +4,14 @@ import { addInviteApi } from "../../../api/invitesApi.ts";
 import { AddInviteRequest } from "../../../types/requests/addInviteRequest.ts";
 import { useSelector } from "react-redux";
 import Invite from "../../../types/entities/invite";
-import { Simulate } from "react-dom/test-utils";
 
 interface AddInviteModalProps {
-  show: boolean;
-  onClose: () => void;
+  show: boolean,
+  onClose: () => void,
+  setDataChanged: (boolean) => void
 }
 
-const AddInviteModal = ({ show, onClose }: AddInviteModalProps) => {
+const AddInviteModal = ({ show, onClose, setDataChanged }: AddInviteModalProps) => {
 
   const [city, setCity] = useState<string>("");
   const [dt, setDt] = useState<string>("");
@@ -39,13 +39,14 @@ const AddInviteModal = ({ show, onClose }: AddInviteModalProps) => {
     if (invite) {
       clearFields();
       setAddInviteState("ok");
+      setDataChanged(true);
     } else {
       setAddInviteState("error");
     }
   }
 
   const setDefaultCity = () => {
-    setCity(mainUser.name);
+    setCity(mainUser.defaultCity);
     setDefaultCitySet(true)
   }
 
@@ -76,14 +77,16 @@ const AddInviteModal = ({ show, onClose }: AddInviteModalProps) => {
         </div>
         <div className="modal-body">
           <b>city</b>
+          <div className="city-container">
           <input
             type="search"
             onChange={(e) => setCity(e.target.value)}
             value={city}
           />
           {
-            !defaultCitySet ? <button onClick={setDefaultCity}>{mainUser.name}</button> : null
+            !defaultCitySet ? <button onClick={setDefaultCity}>{mainUser.defaultCity}</button> : null
           }
+          </div>
           <b>date and time</b>
           <input
             type="datetime-local"
