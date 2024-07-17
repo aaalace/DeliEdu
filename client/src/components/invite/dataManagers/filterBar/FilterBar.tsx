@@ -1,7 +1,9 @@
+import CityAutocomplete from "../../../cityAutocomplete/CityAutocomplete.tsx";
+
 interface FilterBarProps {
-  city: string,
+  selectedCity: string,
   date: string,
-  setCity: (city: string) => void,
+  setSelectedCity: (city: string) => void,
   setDate: (date: string) => void,
 }
 
@@ -9,10 +11,8 @@ const FilterBar = (props: FilterBarProps) => {
 
   return (
     <div>
-      <input
-        type="text"
-        onChange={(e) => props.setCity(e.target.value)}
-        value={props.city}
+      <CityAutocomplete
+        setSelectedCity={props.setSelectedCity}
       />
       <input
         type="date"

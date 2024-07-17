@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import  { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
 import UserService from "../services/userService";
 import AddUserRequest from "../types/requests/addUserRequest";
@@ -50,7 +50,7 @@ class UserController {
       });
       const payload = ticket.getPayload();
       if (payload == undefined || payload.email == undefined || payload.name == undefined) {
-        return next(Error('error in google auth'));
+        return next(Error('error in google auth, try local auth'));
       }
 
       // user
@@ -89,7 +89,7 @@ class UserController {
   async register(req: Request, res: Response, next: NextFunction) {
     try {
       const errors = validationResult(req);
-      if (!errors.isEmpty()) return next(Error(JSON.stringify(errors.mapped())));
+      if (!errors.isEmpty()) return next(Error(errors.array()[0].msg));
 
       // user
       const userService = new UserService();
@@ -118,7 +118,7 @@ class UserController {
   async login(req: Request, res: Response, next: NextFunction) {
     try {
       const errors = validationResult(req);
-      if (!errors.isEmpty()) return next(Error(JSON.stringify(errors.mapped())));
+      if (!errors.isEmpty()) return next(Error(errors.array()[0].msg));
 
       // user
       const userService = new UserService();
@@ -176,13 +176,27 @@ class UserController {
   async changeCity(req: Request, res: Response, next: NextFunction) {
     try {
       const errors = validationResult(req);
-      if (!errors.isEmpty()) return next(Error(JSON.stringify(errors.mapped())));
+      if (!errors.isEmpty()) return next(Error(errors.array()[0].msg));
 
+      // change city
       const userService = new UserService();
       const { defaultCity, userFromToken }: ChangeCityRequest = req.body;
       const user: User = await userService.changeCity(defaultCity, userFromToken.id);
+      const userResponse: UserResponse = toUserResponse(user);
 
-      return res.status(200).json(toUserResponse(user));
+      // upd tokens because city changed
+      const tokenService = new TokenService();
+      const tokens: Tokens = tokenService.createTokens(userResponse);
+      await tokenService.updateRefreshToken(userResponse.id, tokens.refreshToken);
+      res.cookie(REFRESH_TOKEN, tokens.refreshToken, {
+        maxAge: REFRESH_TOKEN_LIFETIME, // 2 weeks
+        httpOnly: true
+      });
+
+      return res.status(200).json({
+        user: userResponse,
+        accessToken: tokens.accessToken
+      });
     } catch (e) {
       next(e)
     }

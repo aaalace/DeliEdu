@@ -9,10 +9,10 @@ import { DateOrderEnum } from "../../../enums/dateOrderEnum.ts";
 interface InviteListProps {
   userId?: number,
   dataChanged?: boolean,
-  setDataChanged?: (boolean) => void
+  setDataChanged?: (b: boolean) => void
 }
 
-const InviteList = ({userId, dataChanged = false, setDataChanged = () => {}}: InviteListProps) => {
+const InviteList = ({userId, dataChanged, setDataChanged}: InviteListProps) => {
 
   const [city, setCity] = useState<string>('');
   const [date, setDate] = useState<string>('');
@@ -21,14 +21,16 @@ const InviteList = ({userId, dataChanged = false, setDataChanged = () => {}}: In
   const [invites, setInvites] = useState<Invite[]>([]);
 
   const handleDelete = async (id: number) => {
-    await deleteInvitesApi(id);
-    setInvites(prevInvites => prevInvites.filter(invite => invite.id !== id));
+    const [state, _]: [boolean, string?] = await deleteInvitesApi(id);
+    if (state) {
+      setInvites(prevInvites => prevInvites.filter(invite => invite.id !== id));
+    }
   };
 
   const loadInvites = useCallback(async () => {
-    const response: Invite[] | null = await getInvitesApi(userId, city, date, order);
-    if (response) {
-      setInvites(response);
+    const [state, data]: [boolean, (Invite[] | string)] = await getInvitesApi(userId, city, date, order);
+    if (state) {
+      setInvites(data as Invite[]);
     }
   }, [userId, city, date, order])
 
@@ -40,13 +42,15 @@ const InviteList = ({userId, dataChanged = false, setDataChanged = () => {}}: In
     if (dataChanged) {
       loadInvites().then();
     }
-    setDataChanged(false)
+    if (setDataChanged) {
+      setDataChanged(false);
+    }
   }, [dataChanged]);
 
   return (
     <div style={{display: "flex", flexDirection: "column", justifyContent: "space-evenly", alignItems: "center"}}>
       <div style={{display: "flex", flexDirection: "row", justifyContent: "space-evenly", width: "70%", alignItems: "center"}}>
-        <FilterBar city={city} date={date} setCity={setCity} setDate={setDate}/>
+        <FilterBar selectedCity={city} date={date} setSelectedCity={setCity} setDate={setDate}/>
         <SortBar order={order} setOrder={setOrder}/>
       </div>
       <div style={{display: "flex", flexDirection: "column", justifyContent: "space-evenly", width: "80%"}}>

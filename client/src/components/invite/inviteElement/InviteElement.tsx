@@ -1,7 +1,7 @@
 import Invite from "../../../types/entities/invite";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { deleteInvitesApi } from "../../../api/invitesApi.ts";
+import Button from "../../general/button/Button.tsx";
+import { useTypedSelector } from "../../../store/store.ts";
 
 interface InviteElementProps {
   invite: Invite;
@@ -10,7 +10,7 @@ interface InviteElementProps {
 
 const InviteElement = ({invite, onDelete}: InviteElementProps) => {
 
-  const mainUser = useSelector(state => state.auth.user)
+  const mainUser = useTypedSelector(state => state.auth.user)
 
   const deleteInvite = async () => {
     const confirmed = window.confirm(`Are you sure you want to delete invite?`);
@@ -19,7 +19,7 @@ const InviteElement = ({invite, onDelete}: InviteElementProps) => {
   }
 
   return (
-    <div style={{display: "flex", flexDirection: "row", justifyContent: "space-evenly"}}>
+    <div style={{display: "flex", flexDirection: "column", justifyContent: "space-evenly"}}>
       <Link to={`/profile/${invite.userId}`}>
         <p>user: {invite.authorName}</p>
       </Link>
@@ -27,11 +27,7 @@ const InviteElement = ({invite, onDelete}: InviteElementProps) => {
       <p>dt: {invite.dt}</p>
       <p>description: {invite.description}</p>
       <p>contacts: {invite.contacts}</p>
-      {invite.userId == mainUser.id ?
-        <button onClick={deleteInvite}>удалить</button>
-        :
-       null
-      }
+      {mainUser && invite.userId == mainUser.id && <Button text={"Delete"} onClick={deleteInvite}/>}
     </div>
   )
 }

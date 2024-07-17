@@ -9,75 +9,57 @@ const privateApiOptions = {
   headers: { 'Content-Type': 'application/json' }
 }
 
-export const googleAuth = async (data: GoogleAuthRequest): Promise<AuthResponse | null> => {
+export const googleAuth = async (reqData: GoogleAuthRequest): Promise<[boolean, (AuthResponse | string)]> => {
   try {
-    const response = await app.post('users/googleAuth', data, privateApiOptions);
-    if (response.status == 200) {
-      const data: AuthResponse = response.data;
-      localStorage.setItem('accessToken', data.accessToken);
-      return data;
-    } else {
-      return null;
-    }
-  } catch (error) {
-    return null;
+    const response = await app.post('users/googleAuth', reqData, privateApiOptions);
+    const data: AuthResponse = response.data;
+    localStorage.setItem('accessToken', data.accessToken);
+    return [true, data];
+  } catch (error: any) {
+    return [false, error.response?.data.message || "internal server error"];
   }
 }
 
-export const registerApi = async (data: RegisterRequest): Promise<AuthResponse | null> => {
+export const registerApi = async (reqData: RegisterRequest): Promise<[boolean, (AuthResponse | string)]> => {
   try {
-    console.log(data)
-    const response = await app.post('users/register', data, privateApiOptions);
-    if (response.status == 200) {
-      const data: AuthResponse = response.data;
-      localStorage.setItem('accessToken', data.accessToken);
-      return data;
-    } else {
-      return null;
-    }
-  } catch (error) {
-    return null;
+    const response = await app.post('users/register', reqData, privateApiOptions);
+    const data: AuthResponse = response.data;
+    localStorage.setItem('accessToken', data.accessToken);
+    return [true, data];
+  } catch (error: any) {
+    return [false, error.response?.data.message || "internal server error"];
   }
 }
 
-export const loginApi = async (data: LoginRequest): Promise<AuthResponse | null> => {
+export const loginApi = async (reqData: LoginRequest): Promise<[boolean, (AuthResponse | string)]> => {
   try {
-    const response = await app.post('users/login', data, privateApiOptions);
-    if (response.status == 200) {
-      const data: AuthResponse = response.data;
-      localStorage.setItem('accessToken', data.accessToken);
-      return data;
-    } else {
-      return null;
-    }
-  } catch (error) {
-    return null;
+    const response = await app.post('users/login', reqData, privateApiOptions);
+    const data: AuthResponse = response.data;
+    localStorage.setItem('accessToken', data.accessToken);
+    return [true, data];
+  } catch (error: any) {
+    return [false, error.response?.data.message || "internal server error"];
   }
 }
 
-export const refreshTokenApi = async (): Promise<AuthResponse | null> => {
+// refreshing access token using refresh
+export const refreshTokenApi = async (): Promise<[boolean, (AuthResponse | string)]> => {
   try {
     const response = await app.get('users/refresh', privateApiOptions);
-    if (response.status == 200) {
-      const data: AuthResponse = response.data;
-      localStorage.setItem('accessToken', data.accessToken);
-      return data;
-    } else {
-      return null;
-    }
-  } catch (error) {
-    return null;
+    const data: AuthResponse = response.data;
+    localStorage.setItem('accessToken', data.accessToken);
+    return [true, data];
+  } catch (error: any) {
+    return [false, error.response?.data.message || "internal server error"];
   }
 }
 
-export const logoutApi = async (): Promise<boolean> => {
+export const logoutApi = async (): Promise<[boolean, string?]> => {
   try {
-    const response = await app.get('users/logout', privateApiOptions);
-    if (response.status == 200) {
-      localStorage.removeItem('accessToken');
-      return true;
-    }
-  } catch (error) {
-    return false;
+    await app.get('users/logout', privateApiOptions);
+    localStorage.removeItem('accessToken');
+    return [true, ''];
+  } catch (error: any) {
+    return [false, error.response?.data.message || "internal server error"];
   }
 }

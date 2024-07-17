@@ -2,7 +2,7 @@ import express, { Application } from "express";
 import dotenv from "dotenv"
 import cors from "cors"
 import router from "./routes";
-import errorHandler from "./middleware/errorHandler";
+import errorHandlerMiddleware from "./middleware/errorHandlerMiddleware";
 import cookieParser from "cookie-parser";
 
 dotenv.config()
@@ -15,7 +15,7 @@ app.use(cors({
   credentials: true
 }));
 app.use('', router)
-app.use(errorHandler)
+app.use(errorHandlerMiddleware)
 
 const port: number = Number(process.env.API_PORT);
 app.listen(port, () => console.log(`Running http://localhost:${port}`));

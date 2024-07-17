@@ -1,9 +1,13 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import User from "../../types/entities/user";
 import { useState } from "react";
 import { changeCityApi } from "../../api/userApi.ts";
 import { ChangeCityRequest } from "../../types/requests/changeCityRequest.ts";
 import { authChangeCity } from "../../store/slices/authSlice.ts";
+import ErrorBlock from "../general/errorBlock/ErrorBlock.tsx";
+import CityAutocomplete from "../cityAutocomplete/CityAutocomplete.tsx";
+import Button from "../general/button/Button.tsx";
+import { useTypedSelector } from "../../store/store.ts";
 
 interface CityBlockProps {
   currentUser: User
@@ -12,42 +16,51 @@ interface CityBlockProps {
 const CityBlock = ({ currentUser }: CityBlockProps) => {
 
   const [cityOnChange, setCityOnChange] = useState(false);
-  const [newCity, setNewCity] = useState('');
+  const [city, setCity] = useState<string>('');
+  const [error, setError] = useState<string>('');
 
   const dispatch = useDispatch();
+  const mainUser = useTypedSelector(state => state.auth.user);
 
   const changeCity = async () => {
-    const data: ChangeCityRequest = {
-      defaultCity: newCity
-    }
-    const user: User | null = await changeCityApi(data);
-    if (user) {
-      dispatch(authChangeCity(user))
+    const reqData: ChangeCityRequest = { defaultCity: city }
+    const [state, data]: [boolean, (User | string)] = await changeCityApi(reqData);
+    if (state) {
+      dispatch(authChangeCity((data as User).defaultCity));
+      setError('');
+    } else {
+      setError(data as string);
     }
     setCityOnChange(false);
   }
 
   const cancelChangeCity = () => {
     setCityOnChange(false);
-    setNewCity('');
+    setCity('');
+    setError('');
+  }
+
+  const setCityOnChangeHandler = () => {
+    setCityOnChange(true);
+  }
+
+  if (mainUser && mainUser.id != currentUser.id) {
+    return <p>Город:{currentUser.defaultCity}</p>
   }
 
   return (
     <div>
       { cityOnChange ?
         <div>
-          <input
-            type="search"
-            value={newCity}
-            onChange={(e) => setNewCity(e.target.value)}
-          />
-          <button onClick={cancelChangeCity}>cancel</button>
-          <button onClick={changeCity}>save</button>
+          <CityAutocomplete setSelectedCity={setCity}/>
+          <Button text="Cancel" onClick={cancelChangeCity}/>
+          <Button text="Save" onClick={changeCity}/>
+          {error.length > 0 ? <ErrorBlock message={error}/> : null}
         </div>
         :
         <div>
-          Город:{currentUser.defaultCity}
-          <button onClick={() => setCityOnChange(true)}>edit</button>
+          <p>Город:{mainUser ? mainUser.defaultCity : '-'}</p>
+          <Button text="Edit" onClick={setCityOnChangeHandler}/>
         </div>
       }
     </div>

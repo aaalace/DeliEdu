@@ -10,7 +10,7 @@ export const authApp = axios.create({
   baseURL: API_URL,
 })
 
-const authInterceptor = config => {
+const authInterceptor = (config: any) => {
   config.headers.authorization = `Bearer ${localStorage.getItem("accessToken")}`
   return config
 }

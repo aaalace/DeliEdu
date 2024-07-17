@@ -30,7 +30,7 @@ class InviteController {
   async addInvite(req: Request, res: Response, next: NextFunction) {
     try {
       const errors = validationResult(req);
-      if (!errors.isEmpty()) return next(Error(JSON.stringify(errors.mapped())));
+      if (!errors.isEmpty()) return next(Error(errors.array()[0].msg));
 
       const inviteService = new InviteService();
 

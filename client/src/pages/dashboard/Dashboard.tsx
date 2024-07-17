@@ -1,6 +1,7 @@
 import InviteList from "../../components/invite/inviteList/InviteList.tsx";
 import { useState } from "react";
 import AddInviteModal from "../../components/modals/addInviteModal/AddInviteModal.tsx";
+import Button from "../../components/general/button/Button.tsx";
 
 const Dashboard = () => {
 
@@ -23,9 +24,9 @@ const Dashboard = () => {
   return (
     <div>
       <h1>дашборд</h1>
-      <button onClick={openModal}>Добавить инвайт</button>
-      <InviteList dataChanged={dataChanged} setDataChanged={setDataChanged}/>
-      <AddInviteModal show={showModal} onClose={closeModal} setDataChanged={setDataChanged}/>
+      <Button text="Add invite" onClick={openModal}/>
+      <InviteList dataChanged={dataChanged} setDataChanged={handleDataChanged}/>
+      <AddInviteModal show={showModal} onClose={closeModal} setDataChanged={handleDataChanged}/>
     </div>
   )
 }

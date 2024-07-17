@@ -1,14 +1,17 @@
-import "./index.css";
 import { useState } from "react";
 import { addInviteApi } from "../../../api/invitesApi.ts";
 import { AddInviteRequest } from "../../../types/requests/addInviteRequest.ts";
-import { useSelector } from "react-redux";
 import Invite from "../../../types/entities/invite";
+import ErrorBlock from "../../general/errorBlock/ErrorBlock.tsx";
+import CityAutocomplete from "../../cityAutocomplete/CityAutocomplete.tsx";
+import "./index.scss";
+import Button from "../../general/button/Button.tsx";
+import { useTypedSelector } from "../../../store/store.ts";
 
 interface AddInviteModalProps {
   show: boolean,
   onClose: () => void,
-  setDataChanged: (boolean) => void
+  setDataChanged: (b: boolean) => void
 }
 
 const AddInviteModal = ({ show, onClose, setDataChanged }: AddInviteModalProps) => {
@@ -18,14 +21,15 @@ const AddInviteModal = ({ show, onClose, setDataChanged }: AddInviteModalProps) 
   const [description, setDescription] = useState<string>("");
   const [contacts, setContacts] = useState<string>("");
 
-  const mainUser = useSelector(state => state.auth.user)
+  const [error, setError] = useState<string>('');
 
-  const [addInviteState, setAddInviteState] = useState<string>("")
-  const [defaultCitySet, setDefaultCitySet] = useState<boolean>(false);
+  const mainUser = useTypedSelector(state => state.auth.user);
 
   const addInvite = async () => {
+    if (!mainUser) {
+      return;
+    }
     // validation
-
     const addInviteRequest: AddInviteRequest = {
       userId: mainUser.id,
       city: city,
@@ -33,34 +37,25 @@ const AddInviteModal = ({ show, onClose, setDataChanged }: AddInviteModalProps) 
       description: description,
       contacts: contacts
     }
-
-    const invite: Invite | null = await addInviteApi(addInviteRequest);
-
-    if (invite) {
+    const [state, data]: [boolean, (Invite | string)] = await addInviteApi(addInviteRequest);
+    if (state) {
       clearFields();
-      setAddInviteState("ok");
       setDataChanged(true);
+      setError('');
     } else {
-      setAddInviteState("error");
+      setError(data as string);
     }
   }
-
-  const setDefaultCity = () => {
-    setCity(mainUser.defaultCity);
-    setDefaultCitySet(true)
-  }
-
   const clearFields = () => {
-    setDefaultCitySet(false);
-    setCity("");
-    setDt("");
-    setDescription("");
-    setContacts("");
+    setCity('');
+    setDt('');
+    setDescription('');
+    setContacts('');
   }
 
   const closeModal = () => {
     clearFields();
-    setAddInviteState("");
+    setError('');
     onClose();
   }
 
@@ -72,21 +67,11 @@ const AddInviteModal = ({ show, onClose, setDataChanged }: AddInviteModalProps) 
     <div className="modal-overlay">
       <div className="modal">
         <div className="modal-header">
-          <h2>Добавить инвайт</h2>
+          <h2>Create invite</h2>
           <button onClick={closeModal} className="modal-close-button">&times;</button>
         </div>
         <div className="modal-body">
-          <b>city</b>
-          <div className="city-container">
-          <input
-            type="search"
-            onChange={(e) => setCity(e.target.value)}
-            value={city}
-          />
-          {
-            !defaultCitySet ? <button onClick={setDefaultCity}>{mainUser.defaultCity}</button> : null
-          }
-          </div>
+          <CityAutocomplete setSelectedCity={setCity}/>
           <b>date and time</b>
           <input
             type="datetime-local"
@@ -109,8 +94,8 @@ const AddInviteModal = ({ show, onClose, setDataChanged }: AddInviteModalProps) 
           {contacts.length}/500
         </div>
         <div className="modal-footer">
-          {addInviteState}
-          <button onClick={addInvite}>send</button>
+          {error.length > 0 ? <ErrorBlock message={error}/> : null}
+          <Button text="Create" onClick={addInvite}/>
         </div>
       </div>
     </div>

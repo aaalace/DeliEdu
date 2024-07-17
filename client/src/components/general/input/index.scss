@@ -1,0 +1,35 @@
+@import '@styles/variables';
+
+$input-font-size: .9rem;
+
+.input-container {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.input-label {
+  display: flex;
+  flex-direction: column;
+  color: $text-color;
+  font-size: 12px;
+  font-weight: 700;
+  width: 100%;
+}
+
+.input-field {
+  height: 20px;
+  padding: 5px 10px;
+  border: 1px solid $border-color;
+  border-radius: 10px;
+  font-size: $input-font-size;
+  outline: none;
+  background-color: $background-color;
+
+  &:focus {
+    box-shadow: 0 0 5px $border-color;
+  }
+
+  &:hover {
+    border-color: $hover-color;
+  }
+}

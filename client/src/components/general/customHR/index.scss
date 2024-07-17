@@ -1,0 +1,24 @@
+@import "@styles/variables";
+
+.custom-hr {
+  display: flex;
+  flex-direction: column;
+  margin: 25px 0 10px 0;
+  align-items: center;
+  justify-content: center;
+
+  hr {
+    width: 100%;
+    border: 1px solid $border-color;
+  }
+
+  div{
+    display: flex;
+    position: absolute;
+    font-size: 12px;
+    margin-bottom: 2px;
+    color: $text-color;
+    background-color: $background-color;
+    padding: 0 10px;
+  }
+}

@@ -1,0 +1,49 @@
+@import "@styles/variables";
+
+.login-page {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 60vw;
+  height: 80vh;
+
+  animation: slideInLogin 0.5s;
+
+  @media screen and (max-width: 768px) {
+    animation: none;
+    position: relative;
+  }
+
+  @keyframes slideInLogin {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  .login-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 600px;
+    width: 15vw;
+
+    h1 {
+      margin-bottom: 30px;
+    }
+
+    .button-container {
+      margin: 30px 0;
+    }
+  }
+
+  .ad-del {
+    width: 2px;
+    background-color: $border-color;
+    height: 100%;
+    margin: 50px;
+  }
+}

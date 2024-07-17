@@ -1,0 +1,92 @@
+$modal-background-color: white;
+$modal-overlay-background: rgba(0, 0, 0, 0.5);
+$modal-border-radius: 5px;
+$modal-box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+$modal-padding: 30px;
+$modal-width: 800px;
+$modal-animation-duration: 0.5s;
+$modal-transform-scale-start: 0.7;
+$modal-transform-scale-end: 1;
+$modal-z-index: 1001;
+$close-button-font-size: 1.5rem;
+$button-height: 30px;
+$button-width: 60px;
+$button-margin-left: 10px;
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale($modal-transform-scale-start);
+  }
+  to {
+    transform: scale($modal-transform-scale-end);
+  }
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: $modal-overlay-background;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  animation: fadeIn $modal-animation-duration forwards;
+  z-index: $modal-z-index;
+
+  .modal {
+    background: $modal-background-color;
+    padding: $modal-padding;
+    border-radius: $modal-border-radius;
+    width: $modal-width;
+    box-shadow: $modal-box-shadow;
+    transform: scale($modal-transform-scale-start);
+    animation: scaleIn $modal-animation-duration forwards;
+
+    &-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      > h2 {
+        margin: 0;
+      }
+
+      .modal-close-button {
+        background: none;
+        border: none;
+        font-size: $close-button-font-size;
+        cursor: pointer;
+      }
+    }
+
+    &-body {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+
+      .city-container {
+        display: flex;
+        flex-direction: row;
+      }
+    }
+
+    &-footer {
+      width: 100%;
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+    }
+  }
+}

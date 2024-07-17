@@ -1,6 +1,6 @@
 import { MouseEvent, useEffect, useState } from "react";
 import { logoutApi } from "../../api/authApi.ts";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { authLogout } from "../../store/slices/authSlice.ts";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +8,8 @@ import InviteList from "../../components/invite/inviteList/InviteList.tsx";
 import User from "../../types/entities/user";
 import { getUserById } from "../../api/userApi.ts";
 import CityBlock from "../../components/profile/CityBlock.tsx";
+import Button from "../../components/general/button/Button.tsx";
+import { useTypedSelector } from "../../store/store.ts";
 
 const Profile = () => {
 
@@ -16,24 +18,28 @@ const Profile = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams<{ id: string }>();
-  const mainUser = useSelector(state => state.auth.user)
+  const mainUser = useTypedSelector(state => state.auth.user)
+
+  if (!mainUser) {
+    return null;
+  }
 
   const leave = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const success: boolean = await logoutApi();
-    if (success) {
+    const [state, _]: [boolean, string?] = await logoutApi();
+    if (state) {
       dispatch(authLogout());
       navigate('/login');
-    } else {
-      alert("error, try to reload page");
     }
   }
 
   useEffect(() => {
     const fetchCurrentUser = async () => {
-      const data: User | null = await getUserById(Number(id));
-      if (data) {
-        setCurrentUser(data);
+      const [state, data]: [boolean, (User | string)] = await getUserById(Number(id));
+      if (state) {
+        setCurrentUser(data as User);
+      } else {
+        navigate(`/profile/${mainUser.id}`)
       }
     };
     fetchCurrentUser().then();
@@ -45,15 +51,9 @@ const Profile = () => {
 
   return (
     <div>
-      <h1>{id == mainUser.id ? 'мой аккаунт' : `${currentUser ? currentUser.name : ''}`}</h1>
-      {id == mainUser.id ?
-        <>
-        <CityBlock currentUser={currentUser}/>
-        <button onClick={leave}>выйти</button>
-        </>
-        :
-        null
-      }
+      <h1>{id == mainUser.id.toString() ? 'мой аккаунт' : `${currentUser ? currentUser.name : ''}`}</h1>
+      <CityBlock currentUser={currentUser}/>
+      {id == mainUser.id.toString() && <Button text="Log out" onClick={leave}/>}
       <InviteList userId={Number(id)}/>
     </div>
   )
