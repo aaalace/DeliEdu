@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import User from "../../types/entities/user";
+import User from "../../types/entities/user.ts";
 import { useState } from "react";
 import { changeCityApi } from "../../api/userApi.ts";
 import { ChangeCityRequest } from "../../types/requests/changeCityRequest.ts";

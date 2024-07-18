@@ -1,0 +1,21 @@
+@import "@styles/variables";
+
+.nav-container {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  height: 80px;
+  background-color: $background-color;
+
+  .nav-block {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 20%;
+  }
+}

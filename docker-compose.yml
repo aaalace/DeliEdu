@@ -5,19 +5,15 @@ services:
     build:
       context: ./api
       dockerfile: Dockerfile
-    volumes:
-      - ./api/src:/app/src
     ports:
       - "8000:8000"
-    environment:
-      - NODE_ENV=production
+    networks:
+      - mynetwork
 
   client:
     build:
       context: ./client
       dockerfile: Dockerfile
-    volumes:
-      - ./client/src:/app/src
     ports:
       - "3000:3000"
     depends_on:

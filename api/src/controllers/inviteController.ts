@@ -35,6 +35,7 @@ class InviteController {
       const inviteService = new InviteService();
 
       const { userFromToken, dt, ...rest }: AddInviteBody = req.body;
+
       const addInviteRequest: AddInviteRequest  = {
         ...rest,
         dt: new Date(dt)

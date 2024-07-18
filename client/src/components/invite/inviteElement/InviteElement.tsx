@@ -1,4 +1,4 @@
-import Invite from "../../../types/entities/invite";
+import Invite from "../../../types/entities/invite.ts";
 import { Link } from "react-router-dom";
 import Button from "../../general/button/Button.tsx";
 import { useTypedSelector } from "../../../store/store.ts";

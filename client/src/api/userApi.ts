@@ -1,5 +1,5 @@
 import { app, authApp } from "../lib/axios.ts";
-import User from "../types/entities/user";
+import User from "../types/entities/user.ts";
 import { ChangeCityRequest } from "../types/requests/changeCityRequest.ts";
 import { AuthResponse } from "../types/responses/authResponse.ts";
 

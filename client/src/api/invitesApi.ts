@@ -1,5 +1,5 @@
 import { app, authApp } from "../lib/axios.ts"
-import Invite from "../types/entities/invite";
+import Invite from "../types/entities/invite.ts";
 import { DateOrderEnum } from "../enums/dateOrderEnum.ts";
 import { AddInviteRequest } from "../types/requests/addInviteRequest.ts";
 

@@ -5,6 +5,7 @@ import User from "../types/entitites/user";
 import LoginUserRequest from "../types/requests/loginUserRequest";
 import TokenService from "./tokenService";
 import { Tokens } from "../types/helpers/tokens";
+import { ControlError } from "../middleware/errorHandlerMiddleware";
 
 class UserService {
   async getAll(): Promise<User[]> {
@@ -13,7 +14,7 @@ class UserService {
 
   async getUser(userId: number): Promise<User> {
     const user: any = await prisma.user.findUnique({ where: { id: userId } });
-    if (!user) throw Error('user not found');
+    if (!user) throw new ControlError('user not found');
 
     return user;
   }
@@ -24,7 +25,7 @@ class UserService {
 
   async addUser(addUserRequest: AddUserRequest): Promise<User> {
     const user: any = await prisma.user.findFirst({ where: { email: addUserRequest.email } });
-    if (user) throw Error('user is already exists');
+    if (user) throw new ControlError('user is already exists');
 
     const hash: string = await bcrypt.hash(addUserRequest.password, 3);
     const newUser: any = await prisma.user.create({
@@ -35,17 +36,17 @@ class UserService {
         defaultCity: addUserRequest.defaultCity
       }
     });
-    if (!newUser) throw Error('error in creating user instance');
+    if (!newUser) throw new ControlError('error in creating user instance');
 
     return newUser;
   }
 
   async login(loginUserRequest: LoginUserRequest): Promise<User> {
     const user: any = await prisma.user.findFirst({ where: { email: loginUserRequest.email } });
-    if (!user) throw Error('wrong email or password');
+    if (!user) throw new ControlError('wrong email or password');
 
     const isEqual: boolean = await bcrypt.compare(loginUserRequest.password, user.password);
-    if(!isEqual) throw Error('wrong email or password');
+    if(!isEqual) throw new ControlError('wrong email or password');
 
     return user;
   }
@@ -53,7 +54,7 @@ class UserService {
   async refresh(oldRefreshToken: string) {
     const tokenService = new TokenService();
     const localUserData = tokenService.verifyRefreshToken(oldRefreshToken);
-    if (!localUserData) throw Error('unauthorized');
+    if (!localUserData) throw new ControlError('unauthorized');
 
     const { iat, exp, ...userResponse } = localUserData;
 
@@ -76,7 +77,7 @@ class UserService {
       where: { id: userId },
       data: { defaultCity: newDefaultCity },
     });
-    if (!updatedUser) throw Error('error while updating city');
+    if (!updatedUser) throw new ControlError('error while updating city');
 
     return updatedUser;
   }

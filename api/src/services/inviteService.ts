@@ -5,6 +5,7 @@ import { InviteQuery } from "../types/helpers/inviteQuery";
 import InviteResponse from "../types/responses/inviteResponse";
 import { InvitesGetOptions } from "../types/helpers/invitesGetOptions";
 import { createInvitesGetOptions } from "../utils/createInvitesGetOptions";
+import { ControlError } from "../middleware/errorHandlerMiddleware";
 
 class InviteService {
   async getInvites(query: InviteQuery): Promise<InviteResponse[]> {
@@ -31,16 +32,21 @@ class InviteService {
   }
 
   async addInvite(addInviteRequest: AddInviteRequest, userId: number): Promise<Invite> {
-    const newInvite: any = await prisma.invite.create({
-      data: {
-        userId: userId,
-        city: addInviteRequest.city,
-        dt: addInviteRequest.dt,
-        description: addInviteRequest.description,
-        contacts: addInviteRequest.contacts
-      }
-    });
-    if (!newInvite) throw Error('error in creating invite instance');
+    let newInvite: any;
+    try {
+      newInvite = await prisma.invite.create({
+        data: {
+          userId: userId,
+          city: addInviteRequest.city,
+          dt: addInviteRequest.dt,
+          description: addInviteRequest.description,
+          contacts: addInviteRequest.contacts
+        }
+      });
+    } catch (error: any) {
+      throw new ControlError('wrong date ot time');
+    }
+    if (!newInvite) throw new ControlError('error in creating invite instance');
 
     return newInvite;
   }

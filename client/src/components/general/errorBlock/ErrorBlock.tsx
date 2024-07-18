@@ -4,7 +4,7 @@ interface ErrorBlockProps {
 
 const ErrorBlock = ({message}: ErrorBlockProps) => {
   return (
-    <div style={{color: "red", height: "40px"}}>
+    <div style={{color: "red"}}>
       {message}
     </div>
   )

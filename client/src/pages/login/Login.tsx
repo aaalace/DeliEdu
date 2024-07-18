@@ -29,7 +29,7 @@ const Login = () => {
 
   useEffect(() => {
     if (authenticated && user) {
-      navigate(`/profile/${user.id}`);
+      navigate('/dashboard');
     }
   }, [authenticated]);
 

@@ -2,12 +2,13 @@
 
 .autocomplete {
   position: relative;
-  width: 100%;
+  width: fit-content;
+
 
   &-input-container {
     display: flex;
     flex-direction: column;
-    justify-content: start;
+    width: fit-content;
   }
 
   &-input {

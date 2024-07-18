@@ -1,7 +1,7 @@
 import InviteElement from "../inviteElement/InviteElement.tsx";
 import { useCallback, useEffect, useState } from "react";
 import { deleteInvitesApi, getInvitesApi } from "../../../api/invitesApi.ts";
-import Invite from "../../../types/entities/invite";
+import Invite from "../../../types/entities/invite.ts";
 import SortBar from "../dataManagers/sortBar/SortBar.tsx";
 import FilterBar from "../dataManagers/filterBar/FilterBar.tsx";
 import { DateOrderEnum } from "../../../enums/dateOrderEnum.ts";

@@ -2,11 +2,18 @@
 
 $input-font-size: .9rem;
 
-.input-container {
+.textarea-container {
   display: flex;
+  flex-direction: column;
 }
 
-.input-label {
+.counter {
+  color: $text-color;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.textarea-label {
   display: flex;
   flex-direction: column;
   color: $text-color;
@@ -15,8 +22,9 @@ $input-font-size: .9rem;
   width: 100%;
 }
 
-.input-field {
-  height: 20px;
+.textarea-field {
+  resize: none;
+  height: 100px;
   padding: 5px 10px;
   border: 1px solid $border-color;
   border-radius: 10px;

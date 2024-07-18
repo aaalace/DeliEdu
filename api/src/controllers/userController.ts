@@ -12,6 +12,7 @@ import TokenService from "../services/tokenService";
 import { Tokens } from "../types/helpers/tokens";
 import ChangeCityRequest from "../types/requests/changeCityRequest";
 import { OAuth2Client } from "google-auth-library";
+import { ControlError } from "../middleware/errorHandlerMiddleware";
 
 class UserController {
   async getAll(req: Request, res: Response, next: NextFunction) {
@@ -32,7 +33,6 @@ class UserController {
       const { userId } = req.params;
       const user: User = await userService.getUser(Number(userId));
 
-
       return res.status(200).json(toUserResponse(user));
     } catch (error) {
       next(error);
@@ -50,7 +50,7 @@ class UserController {
       });
       const payload = ticket.getPayload();
       if (payload == undefined || payload.email == undefined || payload.name == undefined) {
-        return next(Error('error in google auth, try local auth'));
+        return next(new ControlError('error in google auth, try local auth'));
       }
 
       // user
@@ -89,7 +89,7 @@ class UserController {
   async register(req: Request, res: Response, next: NextFunction) {
     try {
       const errors = validationResult(req);
-      if (!errors.isEmpty()) return next(Error(errors.array()[0].msg));
+      if (!errors.isEmpty()) return next(new ControlError(errors.array()[0].msg));
 
       // user
       const userService = new UserService();
@@ -118,7 +118,7 @@ class UserController {
   async login(req: Request, res: Response, next: NextFunction) {
     try {
       const errors = validationResult(req);
-      if (!errors.isEmpty()) return next(Error(errors.array()[0].msg));
+      if (!errors.isEmpty()) return next(new ControlError(errors.array()[0].msg));
 
       // user
       const userService = new UserService();
@@ -176,7 +176,7 @@ class UserController {
   async changeCity(req: Request, res: Response, next: NextFunction) {
     try {
       const errors = validationResult(req);
-      if (!errors.isEmpty()) return next(Error(errors.array()[0].msg));
+      if (!errors.isEmpty()) return next(new ControlError(errors.array()[0].msg));
 
       // change city
       const userService = new UserService();
