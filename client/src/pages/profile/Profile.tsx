@@ -52,9 +52,17 @@ const Profile = () => {
 
   return (
     <div className="profile-page">
-      <h1>{id == mainUser.id.toString() ? 'мой аккаунт' : `${currentUser ? currentUser.name : ''}`}</h1>
-      <CityBlock currentUser={currentUser}/>
-      {id == mainUser.id.toString() && <Button text="Log out" onClick={leave}/>}
+      <div className="user-data-wrapper">
+        <div className="user-data-container">
+          <CityBlock currentUser={currentUser}/>
+          <div className="h1-container">
+            <h1>{currentUser ? currentUser.name : 'Account'}</h1>
+          </div>
+          <div className="logout-container">
+            {id == mainUser.id.toString() && <Button customizeClassName="logout" text="Log out" onClick={leave}/>}
+          </div>
+        </div>
+      </div>
       <InviteList userId={Number(id)}/>
     </div>
   )

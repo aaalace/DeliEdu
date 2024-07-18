@@ -1,7 +1,8 @@
-import Invite from "../../../types/entities/invite.ts";
+import Invite from "../../../types/entities/invite";
 import { Link } from "react-router-dom";
-import Button from "../../general/button/Button.tsx";
-import { useTypedSelector } from "../../../store/store.ts";
+import Button from "../../general/button/Button";
+import { useTypedSelector } from "../../../store/store";
+import './index.scss';
 
 interface InviteElementProps {
   invite: Invite;
@@ -10,7 +11,7 @@ interface InviteElementProps {
 
 const InviteElement = ({invite, onDelete}: InviteElementProps) => {
 
-  const mainUser = useTypedSelector(state => state.auth.user)
+  const mainUser = useTypedSelector(state => state.auth.user);
 
   const deleteInvite = async () => {
     const confirmed = window.confirm(`Are you sure you want to delete invite?`);
@@ -19,17 +20,33 @@ const InviteElement = ({invite, onDelete}: InviteElementProps) => {
   }
 
   return (
-    <div style={{display: "flex", flexDirection: "column", justifyContent: "space-evenly"}}>
-      <Link to={`/profile/${invite.userId}`}>
-        <p>user: {invite.authorName}</p>
-      </Link>
-      <p>city: {invite.city}</p>
-      <p>dt: {invite.dt}</p>
-      <p>description: {invite.description}</p>
-      <p>contacts: {invite.contacts}</p>
-      {mainUser && invite.userId == mainUser.id && <Button text={"Delete"} onClick={deleteInvite}/>}
+    <div className="invite-card">
+      <div className="invite-card__header">
+        <Link to={`/profile/${invite.userId}`} className="invite-card__user">
+          {invite.authorName}
+        </Link>
+        <div className="invite-card__date">
+          {new Date(invite.dt).toLocaleString()}
+        </div>
+      </div>
+      <div className="invite-card__body">
+        <div className="invite-card__city">
+          {invite.city}
+        </div>
+        <div className="invite-card__description">
+          <span className="invite-card__label">Description:</span> {invite.description}
+        </div>
+        <div className="invite-card__contacts">
+          <span className="invite-card__label">Contacts:</span> {invite.contacts}
+        </div>
+      </div>
+      <div className="button-container">
+        {mainUser && invite.userId === mainUser.id &&
+            <Button text={"Delete"} onClick={deleteInvite} />
+        }
+      </div>
     </div>
-  )
+  );
 }
 
 export default InviteElement;

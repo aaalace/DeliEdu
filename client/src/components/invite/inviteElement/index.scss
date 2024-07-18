@@ -1,0 +1,67 @@
+@import "@styles/variables";
+
+.invite-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 36px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+
+    .invite-card__user {
+      font-size: 1.5em;
+      font-weight: bold;
+      text-decoration: none;
+      color: $primary-color;
+    }
+
+    .invite-card__date {
+      font-size: 0.9em;
+      color: #999;
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+
+    .invite-card__city {
+      font-size: 1.2em;
+      color: #666;
+    }
+
+    .invite-card__description, .invite-card__contacts {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .invite-card__label {
+      font-weight: bold;
+      color: #333;
+    }
+
+  }
+
+  .button-container {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    width: 100%;
+
+    & > * {
+      width: 100px;
+    }
+  }
+}

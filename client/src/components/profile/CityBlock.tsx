@@ -6,8 +6,11 @@ import { ChangeCityRequest } from "../../types/requests/changeCityRequest.ts";
 import { authChangeCity } from "../../store/slices/authSlice.ts";
 import ErrorBlock from "../general/errorBlock/ErrorBlock.tsx";
 import CityAutocomplete from "../cityAutocomplete/CityAutocomplete.tsx";
-import Button from "../general/button/Button.tsx";
 import { useTypedSelector } from "../../store/store.ts";
+import iconPen from '../../icons/iconPen.svg';
+import iconCheck from '../../icons/iconCheck.svg';
+import iconMinus from '../../icons/iconMinus.svg';
+import "./index.scss"
 
 interface CityBlockProps {
   currentUser: User
@@ -40,27 +43,23 @@ const CityBlock = ({ currentUser }: CityBlockProps) => {
     setError('');
   }
 
-  const setCityOnChangeHandler = () => {
-    setCityOnChange(true);
-  }
-
   if (mainUser && mainUser.id != currentUser.id) {
-    return <p>Город:{currentUser.defaultCity}</p>
+    return null
   }
 
   return (
     <div>
       { cityOnChange ?
-        <div>
+        <div className="edit-data-container">
           <CityAutocomplete setSelectedCity={setCity}/>
-          <Button text="Cancel" onClick={cancelChangeCity}/>
-          <Button text="Save" onClick={changeCity}/>
+          <img src={iconCheck} className="icon" alt="Dash" onClick={changeCity} />
+          <img src={iconMinus} className="icon" alt="Dash" onClick={cancelChangeCity} />
           {error.length > 0 ? <ErrorBlock message={error}/> : null}
         </div>
         :
-        <div>
-          <p>Город:{mainUser ? mainUser.defaultCity : '-'}</p>
-          <Button text="Edit" onClick={setCityOnChangeHandler}/>
+        <div className="ok-data-container">
+          <p>{mainUser ? mainUser.defaultCity : '-'}</p>
+          <img src={iconPen} className="icon" alt="Dash" onClick={() => setCityOnChange(true)} />
         </div>
       }
     </div>

@@ -8,13 +8,30 @@ $button-font-size: 1rem;
   justify-content: center;
   width: 100%;
   padding: 10px 25px;
-  background: linear-gradient(90deg, $secondary-color, #a0cea7);
+  background: $primary-color;
   color: white;
   border: 0;
   border-radius: 30px;
   font-size: $button-font-size;
 
   &:hover {
-    background: linear-gradient(90deg, $secondary-color, $secondary-color);
+    background: $secondary-color;
+  }
+}
+
+.logout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 10px 25px;
+  background: $border-color;
+  color: white;
+  border: 0;
+  border-radius: 30px;
+  font-size: $button-font-size;
+
+  &:hover {
+    background: #f54848;
   }
 }

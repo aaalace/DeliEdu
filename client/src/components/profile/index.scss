@@ -1,0 +1,50 @@
+@import "@styles/variables";
+
+.ok-data-container {
+  width: 100px;
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+
+  p {
+    font-size: 24px;
+    padding: 0;
+    margin: 0 10px 0 0;
+  }
+
+  .icon {
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.edit-data-container {
+  width: 100px;
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+
+  p {
+    font-size: 24px;
+    padding: 0;
+    margin: 0 10px 0 0;
+  }
+
+  .icon {
+    cursor: pointer;
+    color: $primary-color;
+    padding-left: 10px;
+    padding-bottom: 4px;
+    width: 20px;
+    height: 20px;
+
+    &:last-of-type {
+      color: $border-color;
+    }
+
+    &:hover {
+      color: $secondary-color
+    }
+  }
+}

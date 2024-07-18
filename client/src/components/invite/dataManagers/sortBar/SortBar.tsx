@@ -1,5 +1,6 @@
 import { DateOrderEnum } from "../../../../enums/dateOrderEnum.ts";
 import { ChangeEvent } from "react";
+import './index.scss';
 
 interface SortBarProps {
   order: DateOrderEnum,
@@ -13,27 +14,31 @@ const SortBar = (props: SortBarProps) => {
   };
 
   return (
-    <div>
-      <div>
-        <label>
+    <div className="sort-bar">
+      <div className="sort-option">
+        <label className="sort-label">
           <input
             type="radio"
             value={DateOrderEnum.NewFirst}
             checked={props.order == DateOrderEnum.NewFirst}
             onChange={handleOptionChange}
+            className="sort-input"
           />
-          NewFirst
+          <span className="sort-custom-radio"></span>
+          Newest
         </label>
       </div>
-      <div>
-        <label>
+      <div className="sort-option">
+        <label className="sort-label">
           <input
             type="radio"
             value={DateOrderEnum.OldFirst}
             checked={props.order == DateOrderEnum.OldFirst}
             onChange={handleOptionChange}
+            className="sort-input"
           />
-          OldFirst
+          <span className="sort-custom-radio"></span>
+          Oldest
         </label>
       </div>
     </div>

@@ -5,6 +5,7 @@ import Invite from "../../../types/entities/invite.ts";
 import SortBar from "../dataManagers/sortBar/SortBar.tsx";
 import FilterBar from "../dataManagers/filterBar/FilterBar.tsx";
 import { DateOrderEnum } from "../../../enums/dateOrderEnum.ts";
+import "./index.scss"
 
 interface InviteListProps {
   userId?: number,
@@ -48,12 +49,12 @@ const InviteList = ({userId, dataChanged, setDataChanged}: InviteListProps) => {
   }, [dataChanged]);
 
   return (
-    <div style={{display: "flex", flexDirection: "column", justifyContent: "space-evenly", alignItems: "center"}}>
-      <div style={{display: "flex", flexDirection: "row", justifyContent: "space-evenly", width: "70%", alignItems: "center"}}>
+    <div className="list-container">
+      <div className="data-manager">
         <FilterBar selectedCity={city} date={date} setSelectedCity={setCity} setDate={setDate}/>
         <SortBar order={order} setOrder={setOrder}/>
       </div>
-      <div style={{display: "flex", flexDirection: "column", justifyContent: "space-evenly", width: "80%"}}>
+      <div>
         {invites.map((invite: Invite) => {
           return <InviteElement key={invite.id} invite={invite} onDelete={handleDelete}/>
         })}

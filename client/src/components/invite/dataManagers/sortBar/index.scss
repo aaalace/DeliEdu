@@ -1,0 +1,51 @@
+@import "@styles/variables";
+
+.sort-bar {
+  display: flex;
+  gap: 10px;
+}
+
+.sort-option {
+  position: relative;
+}
+
+.sort-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.sort-input {
+  display: none;
+}
+
+.sort-custom-radio {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  margin-right: 10px;
+  position: relative;
+  transition: border-color 0.3s;
+}
+
+.sort-input:checked + .sort-custom-radio {
+  border-color: $primary-color;
+}
+
+.sort-custom-radio::after {
+  content: '';
+  width: 12px;
+  height: 12px;
+  background-color: $primary-color;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.3s;
+}
+
+.sort-input:checked + .sort-custom-radio::after {
+  transform: translate(-50%, -50%) scale(1);
+}

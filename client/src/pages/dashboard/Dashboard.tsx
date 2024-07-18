@@ -24,10 +24,18 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-page">
-      <h1>дашборд</h1>
-      <Button text="Add invite" onClick={openModal}/>
-      <InviteList dataChanged={dataChanged} setDataChanged={handleDataChanged}/>
-      <AddInviteModal show={showModal} onClose={closeModal} setDataChanged={handleDataChanged}/>
+      <div className="db-wrapper">
+        <div className="db-header-container">
+          <div className="h1-container">
+            <h1>Invite board</h1>
+          </div>
+          <div className="add-container">
+            <Button text="Add invite" onClick={openModal}/>
+          </div>
+        </div>
+        <InviteList dataChanged={dataChanged} setDataChanged={handleDataChanged}/>
+        <AddInviteModal show={showModal} onClose={closeModal} setDataChanged={handleDataChanged}/>
+      </div>
     </div>
   )
 }
