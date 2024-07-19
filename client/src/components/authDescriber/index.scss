@@ -1,6 +1,6 @@
 @import "@styles/variables";
 
-.ad-container {
+.side-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -12,7 +12,7 @@
   }
 }
 
-.ad-header {
+.side-header {
   display: flex;
   width: 100%;
   align-items: center;
@@ -27,7 +27,7 @@
   }
 }
 
-.ad-body {
+.side-body {
   display: flex;
   width: 100%;
   align-items: center;
@@ -39,7 +39,7 @@
   }
 }
 
-.ad-footer {
+.side-footer {
   display: flex;
   width: 100%;
   align-items: center;

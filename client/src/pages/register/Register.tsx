@@ -66,7 +66,7 @@ const Register = () => {
           {error.length > 0 ? <ErrorBlock message={error}/> : <ErrorBlock message={''}/>}
         </div>
       </div>
-      <div className="ad-del"></div>
+      <div className="side"></div>
       <AuthDescriber width="30vw"/>
     </div>
   )

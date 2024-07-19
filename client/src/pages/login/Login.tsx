@@ -49,7 +49,7 @@ const Login = () => {
   return (
     <div className="login-page">
       <AuthDescriber width="30vw"/>
-      <div className="ad-del"></div>
+      <div className="side"></div>
       <div className="login-container">
         <h1>Sign in</h1>
         <GoogleAuth/>
